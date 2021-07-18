@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import dayjs from "dayjs";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -18,6 +19,16 @@ function ActivitiesGrouped({ activities, distance }) {
       ),
     [activities, minDistance, maxDistance]
   );
+
+  function formatTime(time) {
+    const duration = dayjs(time * 1000).subtract(
+      dayjs().utcOffset(),
+      "minutes"
+    );
+
+    return duration.format("HH:mm:ss");
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -35,7 +46,7 @@ function ActivitiesGrouped({ activities, distance }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {activity.elapsed_time}
+                {formatTime(activity.elapsed_time)}
               </TableCell>
               <TableCell>{activity.average_speed}</TableCell>
               <TableCell>{activity.name}</TableCell>
