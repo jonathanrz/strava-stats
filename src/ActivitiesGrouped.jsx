@@ -34,9 +34,10 @@ function ActivitiesGrouped({ activities, distance }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>Date</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell>Time</TableCell>
             <TableCell>Speed</TableCell>
-            <TableCell>Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,10 +47,13 @@ function ActivitiesGrouped({ activities, distance }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
+                {dayjs(activity.start_date).format("MMM, DD YYYY")}
+              </TableCell>
+              <TableCell>{activity.name}</TableCell>
+              <TableCell component="th" scope="row">
                 {formatTime(activity.elapsed_time)}
               </TableCell>
               <TableCell>{activity.average_speed}</TableCell>
-              <TableCell>{activity.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

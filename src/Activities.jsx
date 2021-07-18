@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
+import Button from "@material-ui/core/Button";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import useAxios from "./hooks/useAxios";
-import useAsync from "./hooks/useAsync";
 import ActivitiesGrouped from "./ActivitiesGrouped";
+
+const LoadMoreButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
 
 const TABS = [
   {
@@ -22,12 +29,22 @@ const TABS = [
 ];
 
 function Activities() {
+  const [page, setPage] = useState(1);
   const [tabSelected, setTabSelected] = useState(0);
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(false);
   const axios = useAxios();
-  const activitiesAsync = useAsync(
-    () => axios.get("activities").then(({ data }) => data),
-    []
-  );
+
+  useEffect(loadActivities, [page]);
+
+  function loadActivities() {
+    setLoading(true);
+
+    axios
+      .get(`activities?page=${[page]}&per_page=50`)
+      .then(({ data }) => setActivities([...activities, ...data]))
+      .finally(() => setLoading(false));
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -41,10 +58,16 @@ function Activities() {
           ))}
         </Tabs>
       </Box>
+      {loading && <div>Loading...</div>}
       <ActivitiesGrouped
-        activities={activitiesAsync.data || []}
+        activities={activities}
         distance={TABS[tabSelected].distance}
       />
+      <LoadMoreButtonContainer>
+        <Button variant="outlined" onClick={() => setPage(page + 1)}>
+          Load More
+        </Button>
+      </LoadMoreButtonContainer>
     </Box>
   );
 }
