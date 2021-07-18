@@ -21,12 +21,21 @@ function ActivitiesGrouped({ activities, distance }) {
   );
 
   function formatTime(time) {
-    const duration = dayjs(time * 1000).subtract(
-      dayjs().utcOffset(),
-      "minutes"
-    );
+    const duration = dayjs.duration(time * 1000);
 
-    return duration.format("HH:mm:ss");
+    if (duration.hours() > 0) return duration.format("H[h]mm[m]ss[s]");
+
+    return duration.format("mm[m]ss[s]");
+  }
+
+  function formatSpeed(time, distance) {
+    const secondsPerMeters = time / distance;
+    const secondsPerKm = secondsPerMeters * 1000;
+    const minutesPerKm = Math.trunc(secondsPerKm / 60);
+    let secondsRestPerKm = Math.trunc(secondsPerKm % 60).toString();
+    if (secondsRestPerKm.length === 1)
+      secondsRestPerKm = "0" + secondsRestPerKm;
+    return `${minutesPerKm}:${secondsRestPerKm}/km`;
   }
 
   return (
@@ -36,6 +45,7 @@ function ActivitiesGrouped({ activities, distance }) {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
+            <TableCell>Distance</TableCell>
             <TableCell>Time</TableCell>
             <TableCell>Speed</TableCell>
           </TableRow>
@@ -50,10 +60,13 @@ function ActivitiesGrouped({ activities, distance }) {
                 {dayjs(activity.start_date).format("MMM, DD YYYY")}
               </TableCell>
               <TableCell>{activity.name}</TableCell>
+              <TableCell>{activity.distance}</TableCell>
               <TableCell component="th" scope="row">
-                {formatTime(activity.elapsed_time)}
+                {formatTime(activity.moving_time)}
               </TableCell>
-              <TableCell>{activity.average_speed}</TableCell>
+              <TableCell>
+                {formatSpeed(activity.moving_time, activity.distance)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
