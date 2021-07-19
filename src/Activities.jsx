@@ -4,7 +4,9 @@ import Button from "@material-ui/core/Button";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
+import { Redirect } from "react-router-dom";
 import useAxios from "./hooks/useAxios";
+import useQuery from "./hooks/useQuery";
 import ActivitiesGrouped from "./ActivitiesGrouped";
 
 const LoadMoreButtonContainer = styled.div`
@@ -34,6 +36,7 @@ function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const axios = useAxios();
+  const params = useQuery();
 
   const loadActivities = useCallback(() => {
     setLoading(true);
@@ -45,6 +48,12 @@ function Activities() {
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(loadActivities, [page, loadActivities]);
+
+  const code = params.find((p) => p.key === "code");
+
+  console.log({ code, params });
+
+  if (code) return <Redirect to="/exchange_token" />;
 
   return (
     <Box sx={{ width: "100%" }}>

@@ -11,6 +11,8 @@ import Activities from "./Activities";
 function HomePage() {
   const token = Cookie.get("token");
 
+  console.log({ location: window.location });
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,7 +31,7 @@ function HomePage() {
           </Typography>
           <Link
             color="inherit"
-            href={`http://www.strava.com/oauth/authorize?client_id=${process.env.REACT_APP_STRAVA_STATS_CLIENT_ID}&response_type=code&redirect_uri=${window.location.origin}/#/exchange_token&scope=activity:read_all`}
+            href={`http://www.strava.com/oauth/authorize?client_id=${process.env.REACT_APP_STRAVA_STATS_CLIENT_ID}&response_type=code&approval_prompt=force&redirect_uri=${window.location.origin}/#/exchange_token&scope=activity:read_all`}
           >
             Login
           </Link>

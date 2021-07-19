@@ -1,22 +1,15 @@
 import { useEffect, useState } from "react";
-import { useLocation, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookie from "js-cookie";
-
-function useQuery() {
-  return useLocation()
-    .search.replace("?", "")
-    .split("&")
-    .map((param) => {
-      const [key, value] = param.split("=");
-      return { key, value };
-    });
-}
+import useQuery from "./hooks/useQuery";
 
 function ExchangeTokenPage() {
   const [athlete, setAthlete] = useState();
   const params = useQuery();
   const code = params.find((p) => p.key === "code");
+
+  console.log("exchange token");
 
   useEffect(() => {
     if (!code || !code.value) return;
