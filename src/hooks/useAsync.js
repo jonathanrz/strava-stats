@@ -28,7 +28,7 @@ export default function useAsync(
         typeof patch === "function" ? patch(prevState.data) : patch;
       setState({ data: newData });
     });
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const run = useCallback((...payload) => {
     requestCounter.current += 1;
@@ -62,7 +62,7 @@ export default function useAsync(
           });
         }
       });
-  }, deps);
+  }, deps); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // By default, the async function is called automatically.
@@ -70,7 +70,7 @@ export default function useAsync(
     if (!defer) {
       run();
     }
-  }, deps);
+  }, deps); //eslint-disable-line react-hooks/exhaustive-deps
 
   // mark as unmounted only once, asap
   useLayoutEffect(() => {

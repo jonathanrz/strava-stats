@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 import Button from "@material-ui/core/Button";
 import Tabs from "@material-ui/core/Tabs";
@@ -35,16 +35,16 @@ function Activities() {
   const [loading, setLoading] = useState(false);
   const axios = useAxios();
 
-  useEffect(loadActivities, [page]);
-
-  function loadActivities() {
+  const loadActivities = useCallback(() => {
     setLoading(true);
 
     axios
       .get(`activities?page=${[page]}&per_page=50`)
       .then(({ data }) => setActivities([...activities, ...data]))
       .finally(() => setLoading(false));
-  }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(loadActivities, [page, loadActivities]);
 
   return (
     <Box sx={{ width: "100%" }}>

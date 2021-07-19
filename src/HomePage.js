@@ -29,7 +29,7 @@ function HomePage() {
           </Typography>
           <Link
             color="inherit"
-            href={`http://www.strava.com/oauth/authorize?client_id=${process.env.REACT_APP_STRAVA_STATS_CLIENT_ID}&response_type=code&redirect_uri=http://localhost:3000/exchange_token&approval_prompt=force&scope=activity:read_all`}
+            href={`http://www.strava.com/oauth/authorize?client_id=${process.env.REACT_APP_STRAVA_STATS_CLIENT_ID}&response_type=code&redirect_uri=${window.location.href}exchange_token&scope=activity:read_all`}
           >
             Login
           </Link>
