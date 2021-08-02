@@ -9,8 +9,6 @@ function ExchangeTokenPage() {
   const params = useQuery();
   const code = params.find((p) => p.key === "code");
 
-  console.log("exchange token");
-
   useEffect(() => {
     if (!code || !code.value) return;
 
@@ -26,8 +24,6 @@ function ExchangeTokenPage() {
         setAthlete(data.athlete);
       });
   }, [code]);
-
-  console.log({ code });
 
   return (
     <div>

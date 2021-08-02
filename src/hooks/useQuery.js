@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 
 function useQuery() {
-  console.log({ location: useLocation() });
   return useLocation()
     .search.replace("?", "")
     .split("&")

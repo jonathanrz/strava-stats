@@ -51,8 +51,6 @@ function Activities() {
 
   const code = params.find((p) => p.key === "code");
 
-  console.log({ code, params });
-
   if (code) return <Redirect to="/exchange_token" />;
 
   return (
