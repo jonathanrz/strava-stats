@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import duration from "dayjs/plugin/duration";
 import dayjs from "dayjs";
+import { ActivitiesProvider } from "./contexts/ActivitiesContext";
 import HomePage from "./HomePage";
 import ExchangeTokenPage from "./ExchangeTokenPage";
 import useQuery from "./hooks/useQuery";
@@ -21,7 +22,9 @@ function App() {
     <Router>
       <Switch>
         <Route path="*">
-          <Routing />
+          <ActivitiesProvider>
+            <Routing />
+          </ActivitiesProvider>
         </Route>
       </Switch>
     </Router>
