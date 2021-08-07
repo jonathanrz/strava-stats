@@ -26,16 +26,27 @@ function ActivitiesGrouped({ activities, distance }) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Distance</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Speed</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Distance
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Time
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Speed
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="center">
+              Heart Rate
+            </TableCell>
             {splits.map((split) => (
-              <TableCell key={split}>{split} km</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }} key={split} align="right">
+                {split} km
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>

@@ -38,18 +38,29 @@ function ActivityRow({ activity, splits }) {
 
     const { splits_metric } = activityDataAsync.data;
 
+    if (!splits_metric) return "Metrics not found";
+
     const currentSplit = splits_metric[index];
 
     if (!currentSplit) return "Not found";
 
-    const totalTime = sumBy(slice(splits_metric, 0, index + 1), "moving_time");
+    const totalTime = sumBy(slice(splits_metric, 0, index + 1), (split) => {
+      const secondsPerMeters = split.moving_time / split.distance;
+      return secondsPerMeters * 1000;
+    });
 
     return `${formatSpeed(currentSplit.moving_time, currentSplit.distance)} -
       ${formatTime(totalTime)}`;
   }
 
   return (
-    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+    <TableRow
+      sx={{
+        "&:last-child td, &:last-child th": { border: 0 },
+        "&:nth-of-type(even)": { backgroundColor: "#e2e2e2" },
+      }}
+      hover
+    >
       <TableCell component="th" scope="row">
         {dayjs(activity.start_date).format("MMM, DD YYYY")}
       </TableCell>
@@ -62,19 +73,21 @@ function ActivityRow({ activity, splits }) {
           {activity.name}
         </a>
       </TableCell>
-      <TableCell>{(activity.distance / 1000).toFixed(2)} km</TableCell>
-      <TableCell component="th" scope="row">
-        {formatTime(activity.moving_time)}
+      <TableCell align="right">
+        {(activity.distance / 1000).toFixed(2)} km
       </TableCell>
-      <TableCell>
+      <TableCell align="right">{formatTime(activity.moving_time)}</TableCell>
+      <TableCell align="right">
         {formatSpeed(activity.moving_time, activity.distance)}
       </TableCell>
+      <TableCell align="center">{activity.average_heartrate} bpm</TableCell>
       {splits.map((split, index) => (
         <TableCell
           key={split}
           sx={{
             width: 60,
           }}
+          align="right"
         >
           {renderSplitContent(index)}
         </TableCell>

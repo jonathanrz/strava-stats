@@ -42,12 +42,12 @@ function Activities() {
     setLoading(true);
 
     axios
-      .get(`activities?page=${[page]}&per_page=50`)
+      .get(`activities?page=${page}&per_page=50`)
       .then(({ data }) => setActivities([...activities, ...data]))
       .finally(() => setLoading(false));
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [page]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(loadActivities, [page, loadActivities]);
+  useEffect(loadActivities, [loadActivities]);
 
   const code = params.find((p) => p.key === "code");
 
