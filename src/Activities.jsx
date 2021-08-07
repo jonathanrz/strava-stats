@@ -17,6 +17,10 @@ const LoadMoreButtonContainer = styled.div`
 
 const TABS = [
   {
+    label: "2km",
+    distance: 2000,
+  },
+  {
     label: "5km",
     distance: 5000,
   },
@@ -25,8 +29,28 @@ const TABS = [
     distance: 7000,
   },
   {
+    label: "8km",
+    distance: 8000,
+  },
+  {
     label: "10km",
     distance: 10000,
+  },
+  {
+    label: "12km",
+    distance: 12000,
+  },
+  {
+    label: "15km",
+    distance: 15000,
+  },
+  {
+    label: "18km",
+    distance: 18000,
+  },
+  {
+    label: "21km",
+    distance: 21000,
   },
 ];
 
@@ -35,6 +59,7 @@ function Activities() {
   const [tabSelected, setTabSelected] = useState(0);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const axios = useAxios();
   const params = useQuery();
 
@@ -43,7 +68,13 @@ function Activities() {
 
     axios
       .get(`activities?page=${page}&per_page=50`)
-      .then(({ data }) => setActivities([...activities, ...data]))
+      .then(({ data }) => {
+        setHasMore(data.length === 50);
+        setActivities([
+          ...activities,
+          ...data.filter((act) => act.type === "Run"),
+        ]);
+      })
       .finally(() => setLoading(false));
   }, [page]); //eslint-disable-line react-hooks/exhaustive-deps
 
@@ -70,11 +101,13 @@ function Activities() {
         activities={activities}
         distance={TABS[tabSelected].distance}
       />
-      <LoadMoreButtonContainer>
-        <Button variant="outlined" onClick={() => setPage(page + 1)}>
-          Load More
-        </Button>
-      </LoadMoreButtonContainer>
+      {hasMore && (
+        <LoadMoreButtonContainer>
+          <Button variant="outlined" onClick={() => setPage(page + 1)}>
+            Load More
+          </Button>
+        </LoadMoreButtonContainer>
+      )}
     </Box>
   );
 }

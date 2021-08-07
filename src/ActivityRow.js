@@ -49,8 +49,16 @@ function ActivityRow({ activity, splits }) {
       return secondsPerMeters * 1000;
     });
 
-    return `${formatSpeed(currentSplit.moving_time, currentSplit.distance)} -
-      ${formatTime(totalTime)}`;
+    return (
+      <div>
+        <div>{formatTime(totalTime)}</div>
+        <div>
+          <small>
+            {formatSpeed(currentSplit.moving_time, currentSplit.distance)}
+          </small>
+        </div>
+      </div>
+    );
   }
 
   return (
